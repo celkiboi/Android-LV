@@ -53,10 +53,12 @@ import hr.ferit.tomislavcelic.myapplication.data.Ingredient
 import hr.ferit.tomislavcelic.myapplication.data.Recipe
 import hr.ferit.tomislavcelic.myapplication.ui.theme.DarkGray
 import hr.ferit.tomislavcelic.myapplication.ui.theme.Gray
+import hr.ferit.tomislavcelic.myapplication.ui.theme.LightGray
 import hr.ferit.tomislavcelic.myapplication.ui.theme.Pink
 import hr.ferit.tomislavcelic.myapplication.ui.theme.Purple500
 import hr.ferit.tomislavcelic.myapplication.ui.theme.Transparent
 import hr.ferit.tomislavcelic.myapplication.ui.theme.White
+
 
 @Composable
 fun RecipeDetailsScreen(
@@ -76,8 +78,8 @@ fun RecipeDetailsScreen(
             ScreenInfo (recipe.title, recipe.category)
             BasicInfo(recipe)
             Description(recipe)
-            /*Servings()
-            IngredientsHeader()*/
+            Servings()
+            IngredientsHeader()
             IngredientsList(recipe)
             ShoppingListButton()
             Reviews(recipe)
@@ -118,6 +120,65 @@ fun IngredientCard(
                 color = DarkGray
             )
         )
+    }
+}
+
+@Composable
+fun Servings() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(horizontal = 16.dp)
+    ){
+        Text(text = "Servings", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            CircularButton(iconResource = R.drawable.ic_minus)
+            Text(
+                text = "1",
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .width(45.dp)
+                    .padding(horizontal = 5.dp)
+            )
+            CircularButton(iconResource = R.drawable.ic_plus)
+        }
+    }
+}
+
+@Composable
+fun IngredientsHeader() {
+    var currentActiveButton by remember { mutableStateOf(0) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .background(Color.Transparent)
+            .fillMaxWidth()
+            .height(44.dp)
+    ) {
+        TabButton(
+            text = "Ingredients",
+            isActive = currentActiveButton == 0
+        ) {
+            currentActiveButton = 0
+        }
+        TabButton(
+            text = "Tools",
+            isActive = currentActiveButton == 1
+        ){
+            currentActiveButton = 1
+        }
+        TabButton("Step", currentActiveButton == 2)
+        {
+            currentActiveButton = 2
+        }
     }
 }
 
@@ -360,6 +421,27 @@ fun OtherRecipes() {
             contentDescription = "Strawberry Pie",
             modifier = Modifier
         )
+    }
+}
+
+@Composable
+fun TabButton(
+    text: String,
+    isActive: Boolean,
+    onClick: () -> Unit
+) {
+    Button(
+        shape = RoundedCornerShape(24.dp),
+        elevation = null,
+        colors = if(isActive)
+            ButtonDefaults.buttonColors(contentColor = White, containerColor = Pink)
+        else
+            ButtonDefaults.buttonColors(contentColor = DarkGray, containerColor = LightGray),
+        modifier = Modifier
+            .fillMaxHeight(),
+        onClick = { onClick() }
+    ) {
+        Text(text = text)
     }
 }
 
