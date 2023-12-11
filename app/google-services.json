@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "726778128313",
+    "project_id": "ormwalv8-celic",
+    "storage_bucket": "ormwalv8-celic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726778128313:android:8241f3600c7250a48b3868",
+        "android_client_info": {
+          "package_name": "hr.ferit.tomislavcelic.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIV9BNSk81JpnuVWTEGiIY1-U8VKEc-rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

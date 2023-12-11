@@ -53,9 +53,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import coil.compose.rememberAsyncImagePainter
 import hr.ferit.tomislavcelic.myapplication.R
 import hr.ferit.tomislavcelic.myapplication.Routes
-import hr.ferit.tomislavcelic.myapplication.data.recipes
+import hr.ferit.tomislavcelic.myapplication.data.RecipeViewModel
 import hr.ferit.tomislavcelic.myapplication.ui.theme.DarkGray
 import hr.ferit.tomislavcelic.myapplication.ui.theme.LightGray
 import hr.ferit.tomislavcelic.myapplication.ui.theme.Pink
@@ -64,6 +65,7 @@ import hr.ferit.tomislavcelic.myapplication.ui.theme.White
 
 
 @Composable fun RecipesScreen(
+    viewModel: RecipeViewModel,
     navigation: NavController
 ) {
     Column(
@@ -81,7 +83,7 @@ import hr.ferit.tomislavcelic.myapplication.ui.theme.White
         )
         RecipeCategories()
         RecipeHeader()
-        RecipesContainer(navigation)
+        RecipesContainer(navigation, viewModel)
         Spacer(modifier = Modifier.weight(1f))
         IconButton(
             iconResource = R.drawable.ic_plus,
@@ -268,14 +270,14 @@ fun RecipeHeader() {
 }
 
 @Composable
-fun RecipesContainer(navigation: NavController) {
+fun RecipesContainer(navigation: NavController, viewModel: RecipeViewModel) {
     LazyRow {
         item { Spacer(modifier = Modifier.width(16.dp)) }
-        item { RecipeCard(0, navigation) }
+        item { RecipeCard(0, navigation, viewModel) }
         item { Spacer(modifier = Modifier.width(8.dp)) }
-        item { RecipeCard(1, navigation) }
+        item { RecipeCard(1, navigation, viewModel) }
         item { Spacer(modifier = Modifier.width(8.dp)) }
-        item { RecipeCard(2, navigation) }
+        item { RecipeCard(2, navigation, viewModel) }
         item { Spacer(modifier = Modifier.width(8.dp)) }
     }
 }
@@ -285,10 +287,11 @@ fun RecipesContainer(navigation: NavController) {
 @Composable
 fun RecipeCard(
     id: Int,
-    navigation: NavController
+    navigation: NavController,
+    viewModel: RecipeViewModel
 ) {
-    @DrawableRes val imageResource: Int = recipes[id].image
-    val title: String = recipes[id].title
+    val imageResource: String = viewModel.recipesData[id].image
+    val title: String = viewModel.recipesData[id].title
     Card(
         modifier = Modifier
             .height(326.dp)
@@ -304,7 +307,7 @@ fun RecipeCard(
             modifier = Modifier
                 .fillMaxSize()
         ){
-            Image(painter = painterResource(id = imageResource),
+            Image(painter = rememberAsyncImagePainter(model = imageResource),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
